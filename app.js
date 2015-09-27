@@ -76,9 +76,11 @@ app.get('/',function (req,res){
 
 app.get('/cancel',function(req,res){
 
+
+
 	file.read('data.txt', function(contents){
 	  console.log(contents);
-	  if(contents !=="" ){
+	  if(contents != " " ){
 			  var contents = JSON.parse(contents);
 
 			  console.log("heeh")
@@ -104,13 +106,10 @@ app.get('/cancel',function(req,res){
 				  console.log("cancel code");
 				  console.log(response.body);
 
-				  	if(response.body.status == 'SUCCESS'){
+				  	if(response.body.status === 'SUCCESS'){
 
-				  		var bodycancel = ' OLA CAB GOT CANCELLED '
-						
-				  		var donefile = file.write('data.txt','');
-
-
+				  		var bodycancel = ' OLA CAB GOT CANCELLED ';
+				  		var donefile = file.write('data.txt'," ");
 						res.send(meta+bodycancel);
 				  	}else{
 
@@ -122,20 +121,13 @@ app.get('/cancel',function(req,res){
 
 				// 
 			  }
-		}
+		}else{
 
 		res.send(meta+" Not cabs were booked for cancellation");
-
+		}
 	  });
 
 	});
-
-
-
-
-
-
-
 
 
 
