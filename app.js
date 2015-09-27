@@ -123,7 +123,7 @@ app.get('/cancel',function(req,res){
 			  }
 		}else{
 
-		res.send(meta+" Not cabs were booked for cancellation");
+		res.send(meta+" No cabs were booked for cancellation");
 		}
 	  });
 
