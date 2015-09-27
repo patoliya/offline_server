@@ -17,6 +17,11 @@
   },
   "homepage": "https://github.com/patoliya/offline_server#readme",
   "dependencies": {
-    "express": "^4.13.3"
+    "easy-file": "^0.1.0",
+    "express": "^4.13.3",
+    "unirest": "^0.4.2"
+  },
+  "engines": {
+    "node": "0.12.7"
   }
 }
