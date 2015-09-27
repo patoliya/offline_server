@@ -78,50 +78,53 @@ app.get('/cancel',function(req,res){
 
 	file.read('data.txt', function(contents){
 	  console.log(contents);
+	  if(contents !=="" ){
+			  var contents = JSON.parse(contents);
 
-	  var contents = JSON.parse(contents);
+			  console.log("heeh")
 
-	  console.log("heeh")
+			  if(contents.access_code == access_code && contents.crn != null){
+			  	console.log("inside contents")
+			  	var crn = JSON.stringify(contents.crn);
 
-	  if(contents.access_code == access_code && contents.crn != null){
-	  	console.log("inside contents")
-	  	var crn = JSON.stringify(contents.crn);
+			  	var request = unirest("GET", "http://sandbox-t.olacabs.com/v1/bookings/cancel");
 
-	  	var request = unirest("GET", "http://sandbox-t.olacabs.com/v1/bookings/cancel");
+			  	console.log("crn ki value "+ crn);
+				request.query({
+				  'crn': JSON.parse(crn)
+				});
 
-	  	console.log("crn ki value "+ crn);
-		request.query({
-		  'crn': JSON.parse(crn)
-		});
+				request.headers({
+				  "authorization": access_code,
+				  "x-app-token": x_api_token
+				});
 
-		request.headers({
-		  "authorization": access_code,
-		  "x-app-token": x_api_token
-		});
+				request.end(function (response) {
+				  if (response.error) throw new Error(response.error);
+				  console.log("cancel code");
+				  console.log(response.body);
 
-		request.end(function (response) {
-		  if (response.error) throw new Error(response.error);
-		  console.log("cancel code");
-		  console.log(response.body);
+				  	if(response.body.status == 'SUCCESS'){
 
-		  	if(response.body.status == 'SUCCESS'){
-
-		  		var bodycancel = ' OLA CAB GOT CANCELLED '
-				
-		  		var donefile = file.write('data.txt','');
+				  		var bodycancel = ' OLA CAB GOT CANCELLED '
+						
+				  		var donefile = file.write('data.txt','');
 
 
-				res.send(meta+bodycancel);
-		  	}else{
+						res.send(meta+bodycancel);
+				  	}else{
 
-		  		res.send(meta+" Cab is not cancelled Please call cab driver and cancel");
-		  	}
-			
-	      });
-			
+				  		res.send(meta+" Cab is not cancelled Please call cab driver and cancel");
+				  	}
+					
+			      });
+					
 
-		// 
-	  }
+				// 
+			  }
+		}
+
+		res.send(meta+" Not cabs were booked for cancellation");
 
 	  });
 
